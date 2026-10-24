@@ -2,172 +2,572 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Base de Autores ENEM - Estudo Inteligente</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ENEM Autores | Estudo Inteligente</title>
 <style>
-:root{
-  --navy:#071a35;--navy2:#0b2850;--blue:#123d70;--light-blue:#dcecff;
-  --light-blue-2:#edf5ff;--ink:#102744;--muted:#526985;--line:#c5d9f1;
-  --white:#fff;--green:#16834a;--green-bg:#d9fbe7;
-  --yellow:#a56a00;--yellow-bg:#fff0b8;--red:#b42332;--red-bg:#ffe0e3;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:linear-gradient(180deg,var(--navy) 0 290px,#eef5ff 290px 100%);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-header{color:white;padding:42px 20px 48px;background:linear-gradient(130deg,#06152d,#0d3567 65%,#14518b);border-bottom:4px solid #73b8ff}
-header .wrap,main{max-width:1120px;margin:auto}
-header .wrap{padding:0 4px}
-h1{font-size:clamp(2rem,5vw,3.2rem);letter-spacing:-.035em;line-height:1.08;margin:0 0 14px}
-header p{max-width:800px;margin:0;color:#dcecff;font-size:1.05rem}
-main{padding:24px 18px 56px}
-.notice{background:#fff4ce;color:#644700;border:1px solid #f0d889;padding:15px 17px;border-radius:16px;margin-bottom:20px;box-shadow:0 8px 24px #04152b12}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:13px;margin:20px 0 24px}
-.stat{background:linear-gradient(145deg,#dcecff,#c9e2ff);border:1px solid #a9cefa;border-radius:18px;padding:17px 18px;box-shadow:0 8px 20px #06234b12}
-.stat b{display:block;font-size:1.8rem;line-height:1.2;color:#0b376a;margin-bottom:6px}
-.stat span{color:#294d75}
-section{margin-top:34px}
-section>h2{font-size:clamp(1.4rem,3vw,1.8rem);letter-spacing:-.025em;color:#0a2a50;margin-bottom:8px}
+    /* ================= VARIÁVEIS DE COR ================= */
+    :root {
+        --bg-dark: #07111f;
+        --bg-gradient: linear-gradient(135deg, #07111f 0%, #0b1f3d 100%);
+        --card-bg: #12284b;
+        --card-front: linear-gradient(145deg, #183766, #102749);
+        --card-back: linear-gradient(145deg, #0d2342, #081a33);
+        
+        --text-main: #f0f4f8;
+        --text-muted: #8ba3c7;
+        
+        --primary: #3b82f6;
+        --primary-hover: #2563eb;
+        
+        --green: #10b981;
+        --green-bg: rgba(16, 185, 129, 0.15);
+        --yellow: #f59e0b;
+        --yellow-bg: rgba(245, 158, 11, 0.15);
+        --red: #ef4444;
+        --red-bg: rgba(239, 68, 68, 0.15);
+    }
 
-/* Flashcards & Botões */
-.flash{background:linear-gradient(145deg,#d8eaff,#bcdcff);border:1px solid #8dbdf1;border-radius:24px;padding:clamp(18px,4vw,30px);max-width:760px;box-shadow:0 16px 36px #08294b1c}
-.flash .question{font-weight:750;font-size:clamp(1.15rem,2.5vw,1.45rem);line-height:1.45;margin:8px 0 18px;color:#0a2c55}
-#flashCount{display:inline-block;background:#fff;border:1px solid #a9cdf3;color:#1b4c7e;padding:5px 11px;border-radius:999px;font-weight:700;font-size:0.9rem}
-.answer{display:none;background:#f7fbff;border:1px solid #a7c9ee;border-left:5px solid #1b65a5;border-radius:14px;padding:16px 17px;margin:14px 0 18px;color:#183c62}
-button{cursor:pointer;border:0;border-radius:12px;padding:11px 16px;background:#124b87;color:white;font:inherit;font-weight:700;box-shadow:0 4px 10px #08294b20;transition:transform .15s,filter .15s}
-button:hover{filter:brightness(1.07);transform:translateY(-1px)}
-button:focus-visible{outline:3px solid #73b8ff;outline-offset:3px}
+    /* ================= RESET E ESTILOS GERAIS ================= */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
 
-#ratingArea{display:none;margin-top:22px;padding-top:18px;border-top:1px solid #a5c9ef}
-.rating-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}
-#rateEasy{background:var(--green-bg);color:#126b3b;border:1px solid #80d9a3}
-#rateMedium{background:var(--yellow-bg);color:#805200;border:1px solid #e8c65c}
-#rateHard{background:var(--red-bg);color:#a21f2d;border:1px solid #f0a2a9}
-#rateEasy:hover{background:#bdf4d0}#rateMedium:hover{background:#ffe58a}#rateHard:hover{background:#ffc4ca}
-.small{font-size:.9rem;color:var(--muted)}
-footer{color:#516985;font-size:.88rem;margin-top:32px;padding:18px 4px;border-top:1px solid #c8d9ed;text-align:center}
+    body {
+        background: var(--bg-gradient);
+        color: var(--text-main);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-x: hidden;
+    }
 
-@media(max-width:560px){
- body{background:linear-gradient(180deg,var(--navy) 0 330px,#eef5ff 330px 100%)}
- header{padding:30px 17px 35px}
- main{padding:18px 12px 40px}
- .rating-buttons{grid-template-columns:1fr}
- .flash{border-radius:19px}
-}
+    /* ================= CABEÇALHO ================= */
+    header {
+        width: 100%;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1000px;
+    }
+
+    .logo {
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .logo span {
+        color: var(--primary);
+    }
+
+    .stats-badge {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        backdrop-filter: blur(10px);
+    }
+
+    /* ================= CONTAINER PRINCIPAL ================= */
+    main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 20px;
+        max-width: 800px;
+    }
+
+    /* ================= BARRA DE PROGRESSO ================= */
+    .progress-container {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+    
+    .progress-text {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: var(--primary);
+        width: 0%;
+        transition: width 0.4s ease;
+        border-radius: 4px;
+    }
+
+    /* ================= FLASHCARD 3D ================= */
+    .card-scene {
+        width: 100%;
+        height: 380px;
+        perspective: 1200px;
+        margin-bottom: 30px;
+    }
+
+    .card {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+        transform-style: preserve-3d;
+        cursor: pointer;
+    }
+
+    .card.is-flipped {
+        transform: rotateY(180deg);
+    }
+
+    .card-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 24px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .card-front {
+        background: var(--card-front);
+    }
+
+    .card-back {
+        background: var(--card-back);
+        transform: rotateY(180deg);
+        justify-content: flex-start;
+        overflow-y: auto;
+    }
+
+    /* Scrollbar customizada para o verso do cartão */
+    .card-back::-webkit-scrollbar { width: 6px; }
+    .card-back::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+
+    .tag {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        background: rgba(59, 130, 246, 0.2);
+        color: #93c5fd;
+        padding: 6px 12px;
+        border-radius: 20px;
+    }
+
+    .question-text {
+        font-size: 1.4rem;
+        font-weight: 600;
+        line-height: 1.4;
+        margin-top: 20px;
+    }
+
+    .flip-hint {
+        position: absolute;
+        bottom: 20px;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        opacity: 0.7;
+    }
+
+    .answer-title {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+        width: 100%;
+        text-align: left;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding-bottom: 10px;
+    }
+
+    .answer-text {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #cbd5e1;
+        text-align: left;
+        width: 100%;
+    }
+
+    /* ================= CONTROLES / BOTÕES ================= */
+    .controls {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+    }
+
+    .controls.active {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .rating-label {
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-bottom: 5px;
+    }
+
+    .rating-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .btn {
+        border: none;
+        padding: 16px;
+        border-radius: 16px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn:active { transform: scale(0.95); }
+
+    .btn-easy {
+        background: var(--green-bg);
+        color: var(--green);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .btn-easy:hover { background: rgba(16, 185, 129, 0.25); }
+
+    .btn-medium {
+        background: var(--yellow-bg);
+        color: var(--yellow);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .btn-medium:hover { background: rgba(245, 158, 11, 0.25); }
+
+    .btn-hard {
+        background: var(--red-bg);
+        color: var(--red);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .btn-hard:hover { background: rgba(239, 68, 68, 0.25); }
+
+    .btn-reset {
+        background: transparent;
+        color: var(--text-muted);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 10px;
+        font-size: 0.85rem;
+        margin-top: 20px;
+        border-radius: 12px;
+    }
+    .btn-reset:hover { background: rgba(255,255,255,0.05); color: white; }
+
+    /* ================= RESPONSIVIDADE ================= */
+    @media (max-width: 600px) {
+        .card-scene { height: 320px; }
+        .question-text { font-size: 1.2rem; }
+        .rating-grid { grid-template-columns: 1fr; gap: 8px; }
+        .btn { padding: 14px; font-size: 0.95rem; }
+        .card-face { padding: 20px; }
+        .answer-text { font-size: 1rem; }
+    }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="wrap">
-    <h1>Base de Autores ENEM</h1>
-    <p>Estude interpretação de texto e conceitos filosóficos/sociológicos com revisão adaptativa.</p>
-  </div>
-</header>
-
-<main>
-  <div class="notice">
-    <strong>Atenção:</strong> Este é um modelo estrutural. O banco de questões real precisa ser inserido no código JavaScript.
-  </div>
-
-  <div class="stats">
-    <div class="stat"><b>12</b><span>Autores Mapeados</span></div>
-    <div class="stat"><b>5</b><span>Cartões de Exemplo</span></div>
-    <div class="stat"><b>2024</b><span>Última Prova Base</span></div>
-  </div>
-
-  <section id="treino">
-    <h2>Treino com Flashcards</h2>
-    <p class="small">Tente responder mentalmente antes de virar o cartão. Depois, avalie a dificuldade.</p>
-    
-    <div class="flash">
-      <span id="flashCount">Cartão 1 de 5</span>
-      <div class="question" id="questionText">Carregando pergunta...</div>
-      
-      <button id="revealBtn">Virar cartão e revelar resposta</button>
-      
-      <div class="answer" id="answerText"></div>
-
-      <div id="ratingArea">
-        <strong>Como foi lembrar?</strong>
-        <p class="small">Sua avaliação ajusta as próximas revisões.</p>
-        <div class="rating-buttons">
-          <button id="rateEasy" onclick="rate(1)">Fácil</button>
-          <button id="rateMedium" onclick="rate(2)">Intermediário</button>
-          <button id="rateHard" onclick="rate(3)">Difícil</button>
+    <header>
+        <div class="logo">
+            <span>ENEM</span> Autores
         </div>
-        <p id="ratingStatus" class="small" aria-live="polite"></p>
-      </div>
-    </div>
-  </section>
-</main>
+        <div class="stats-badge" id="globalStats">
+            Carregando...
+        </div>
+    </header>
 
-<footer>
-  Projeto de Estudos ENEM &copy; 2024
-</footer>
+    <main>
+        <div class="progress-container">
+            <div class="progress-text">
+                <span>Progresso da Sessão</span>
+                <span id="progressText">0 / 10</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
 
-<script>
-// DADOS DE EXEMPLO (Substitua por suas questões reais do ENEM)
-const quiz = [
-  { q: "Qual é a ideia central defendida por Foucault sobre o poder?", a: "O poder não é apenas repressivo, mas também produtivo, criando saberes e moldando comportamentos através de instituições disciplinares." },
-  { q: "Segundo o empirismo de Hume, de onde vem todo o conhecimento?", a: "Todo conhecimento deriva da experiência sensorial (impressões) e das ideias formadas a partir delas." },
-  { q: "Como o ENEM costuma cobrar a interpretação de texto em Filosofia?", a: "Geralmente exige que o aluno identifique o argumento central do autor no trecho, sem focar apenas em decorar conceitos." },
-  { q: "O que caracteriza a sociologia de Durkheim?", a: "A defesa de que os fatos sociais devem ser tratados como coisas, exercendo coerção sobre os indivíduos." },
-  { q: "Qual a armadilha comum em questões sobre contratualistas?", a: "Confundir o estado de natureza de Hobbes (guerra de todos contra todos) com o de Locke (relativa paz e direitos naturais)." }
-];
+        <!-- Área do Flashcard 3D -->
+        <div class="card-scene">
+            <div class="card" id="flashcard">
+                <!-- Frente do Cartão -->
+                <div class="card-face card-front">
+                    <div class="tag" id="cardSubject">Filosofia</div>
+                    <div class="question-text" id="questionText">Carregando pergunta...</div>
+                    <div class="flip-hint">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                        Toque para virar
+                    </div>
+                </div>
+                <!-- Verso do Cartão -->
+                <div class="card-face card-back">
+                    <div class="tag" style="background: rgba(139, 163, 199, 0.2); color: #cbd5e1;">Resposta</div>
+                    <div class="answer-title">Ideia Central / Gabarito</div>
+                    <div class="answer-text" id="answerText"></div>
+                </div>
+            </div>
+        </div>
 
-let currentQuestion = 0;
-let reviewData = JSON.parse(localStorage.getItem('enemReviewData')) || {};
+        <!-- Controles de Avaliação (Só aparecem depois que vira o cartão) -->
+        <div class="controls" id="controls">
+            <div class="rating-label">Como foi lembrar?</div>
+            <div class="rating-grid">
+                <button class="btn btn-easy" onclick="rateCard(1)">
+                    😎 Fácil
+                </button>
+                <button class="btn btn-medium" onclick="rateCard(2)">
+                    🤔 Intermediário
+                </button>
+                <button class="btn btn-hard" onclick="rateCard(3)">
+                    🥵 Difícil
+                </button>
+            </div>
+            <button class="btn btn-reset" onclick="resetProgress()">Apagar histórico e reiniciar</button>
+        </div>
+    </main>
 
-const questionText = document.getElementById('questionText');
-const answerText = document.getElementById('answerText');
-const revealBtn = document.getElementById('revealBtn');
-const flashCount = document.getElementById('flashCount');
-const ratingArea = document.getElementById('ratingArea');
-const ratingStatus = document.getElementById('ratingStatus');
+    <script>
+        // ================= 1. BANCO DE DADOS DE QUESTÕES =================
+        // Você pode adicionar quantas quiser. O sistema adapta a revisão.
+        const DATABASE = [
+            {
+                id: 1,
+                author: "Michel Foucault",
+                area: "Filosofia",
+                question: "Qual é a principal relação entre poder e saber defendida por Foucault?",
+                answer: "Para Foucault, o poder não é apenas repressivo, mas produtivo. Ele cria saberes, verdades e molda os corpos através de instituições disciplinares (escolas, prisões, hospitais). O saber legitima o poder, e o poder produz saber."
+            },
+            {
+                id: 2,
+                author: "David Hume",
+                area: "Filosofia",
+                question: "De onde se origina todo o conhecimento humano segundo o empirismo de Hume?",
+                answer: "Todo conhecimento deriva da experiência sensível. Para Hume, a mente é uma 'tábula rasa' que recebe 'impressões' (percepções fortes vindas dos sentidos) e forma 'ideias' (cópias enfraquecidas dessas impressões)."
+            },
+            {
+                id: 3,
+                author: "Émile Durkheim",
+                area: "Sociologia",
+                question: "O que são os 'fatos sociais' na teoria de Durkheim?",
+                answer: "São maneiras de agir, pensar e sentir externas ao indivíduo e que exercem coerção sobre ele. Devem ser tratados como 'coisas', ou seja, analisados objetivamente pelo cientista social."
+            },
+            {
+                id: 4,
+                author: "Thomas Hobbes",
+                area: "Filosofia",
+                question: "Como Hobbes descreve o 'estado de natureza'?",
+                answer: "Hobbes descreve o estado de natureza como uma guerra de todos contra todos ('o homem é o lobo do homem'), onde não há justiça ou lei. Para escapar dessa condição de medo, os homens criam o Estado (Leviatã) via contrato social."
+            },
+            {
+                id: 5,
+                author: "John Locke",
+                area: "Filosofia",
+                question: "Segundo Locke, qual é a função do Estado?",
+                answer: "Diferente de Hobbes, Locke acredita que no estado de natureza os homens já têm direitos naturais (vida, liberdade, propriedade). O Estado surge pelo contrato social apenas para garantir e proteger esses direitos."
+            },
+            {
+                id: 6,
+                author: "Karl Marx",
+                area: "Sociologia/Filosofia",
+                question: "O que é a 'mais-valia' no pensamento de Marx?",
+                answer: "É a diferença entre o valor produzido pelo trabalhador e o valor pago a ele (salário). Essa diferença é apropriada pelo capitalista, sendo a base da exploração do sistema capitalista."
+            },
+            {
+                id: 7,
+                author: "Immanuel Kant",
+                area: "Filosofia",
+                question: "O que é o 'imperativo categórico' de Kant?",
+                answer: "É uma regra moral universal e incondicional. Um exemplo: 'Age de tal forma que a tua ação possa ser transformada em lei universal'. Ele não depende de desejos ou consequências, mas do dever pelo dever."
+            },
+            {
+                id: 8,
+                author: "Max Weber",
+                area: "Sociologia",
+                question: "Quais são os três tipos de dominação legítima para Weber?",
+                answer: "Tradicional (baseada no costume, como monarquias), Carismática (baseada nas qualidades de um líder) e Racional-Legal (baseada em leis e regras formais, como o Estado moderno e a burocracia)."
+            }
+        ];
 
-function showQ() {
-  questionText.textContent = quiz[currentQuestion].q;
-  answerText.textContent = quiz[currentQuestion].a;
-  answerText.style.display = 'none';
-  ratingArea.style.display = 'none';
-  revealBtn.style.display = 'inline-block';
-  revealBtn.textContent = 'Virar cartão e revelar resposta';
-  flashCount.textContent = `Cartão ${currentQuestion + 1} de ${quiz.length}`;
-  
-  // Reset status
-  const old = reviewData[quiz[currentQuestion].q];
-  if(old) {
-    let ratingText = old.lastRating === 1 ? 'Fácil' : old.lastRating === 2 ? 'Intermediário' : 'Difícil';
-    ratingStatus.textContent = `Última avaliação: ${ratingText} · ${old.attempts} avaliação(ões).`;
-  } else {
-    ratingStatus.textContent = 'Ainda não avaliado.';
-  }
-}
+        // ================= 2. LÓGICA DO SISTEMA =================
+        let queue = [];          // Fila de cartões a serem estudados
+        let currentCard = null;  // Cartão atual
+        let sessionStats = { total: 0, answered: 0, easy: 0, medium: 0, hard: 0 };
+        
+        // Pega o histórico salvo no navegador (se existir)
+        let history = JSON.parse(localStorage.getItem('enem_review_history')) || {};
 
-revealBtn.onclick = () => {
-  answerText.style.display = 'block';
-  revealBtn.style.display = 'none';
-  ratingArea.style.display = 'block';
-  ratingArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
+        // Elementos da tela
+        const flashcard = document.getElementById('flashcard');
+        const questionText = document.getElementById('questionText');
+        const answerText = document.getElementById('answerText');
+        const cardSubject = document.getElementById('cardSubject');
+        const controls = document.getElementById('controls');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const globalStats = document.getElementById('globalStats');
 
-function rate(level) {
-  const qText = quiz[currentQuestion].q;
-  if (!reviewData[qText]) {
-    reviewData[qText] = { lastRating: level, attempts: 0 };
-  }
-  reviewData[qText].lastRating = level;
-  reviewData[qText].attempts += 1;
-  
-  localStorage.setItem('enemReviewData', JSON.stringify(reviewData));
-  
-  // Avançar para o próximo cartão
-  currentQuestion = (currentQuestion + 1) % quiz.length;
-  showQ();
-}
+        // Prepara a fila de estudos (Lógica Adaptativa)
+        function buildQueue() {
+            let cards = [...DATABASE];
+            
+            // Lógica: Cartões com mais erros (rating 3) aparecem mais vezes na fila
+            cards.forEach(card => {
+                let weight = 1;
+                if (history[card.id] === 3) weight = 3;      // Difícil = aparece 3x
+                else if (history[card.id] === 2) weight = 2; // Médio = aparece 2x
+                else if (history[card.id] === 1) weight = 1; // Fácil = aparece 1x
+                
+                for(let i=0; i<weight; i++) queue.push(card);
+            });
 
-// Inicializar
-showQ();
-</script>
+            // Embaralha a fila (Fisher-Yates)
+            for (let i = queue.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [queue[i], queue[j]] = [queue[j], queue[i]];
+            }
+
+            sessionStats.total = queue.length;
+            sessionStats.answered = 0;
+            sessionStats.easy = 0;
+            sessionStats.medium = 0;
+            sessionStats.hard = 0;
+            
+            updateProgress();
+            nextCard();
+        }
+
+        // Carrega o próximo cartão da fila
+        function nextCard() {
+            if (queue.length === 0) {
+                finishSession();
+                return;
+            }
+
+            currentCard = queue.pop();
+            
+            // Reseta visual do cartão
+            flashcard.classList.remove('is-flipped');
+            controls.classList.remove('active');
+            
+            // Preenche os dados
+            questionText.textContent = currentCard.question;
+            answerText.textContent = currentCard.answer;
+            cardSubject.textContent = currentCard.area;
+            
+            // Atualiza estatísticas globais
+            let totalEstudados = Object.keys(history).length;
+            globalStats.textContent = `${totalEstudados} de ${DATABASE.length} cartões dominados`;
+        }
+
+        // Ação de virar o cartão
+        flashcard.addEventListener('click', () => {
+            if (!flashcard.classList.contains('is-flipped')) {
+                flashcard.classList.add('is-flipped');
+                // Mostra os botões de avaliação após a animação
+                setTimeout(() => { controls.classList.add('active'); }, 300);
+            }
+        });
+
+        // Função para avaliar o cartão
+        function rateCard(rating) {
+            // Salva no histórico do navegador
+            history[currentCard.id] = rating;
+            localStorage.setItem('enem_review_history', JSON.stringify(history));
+
+            // Atualiza contadores da sessão
+            sessionStats.answered++;
+            if (rating === 1) sessionStats.easy++;
+            if (rating === 2) sessionStats.medium++;
+            if (rating === 3) sessionStats.hard++;
+
+            updateProgress();
+            
+            // Vira o cartão de volta antes de carregar o próximo
+            flashcard.classList.remove('is-flipped');
+            controls.classList.remove('active');
+            
+            setTimeout(() => {
+                nextCard();
+            }, 400); // espera a animação terminar
+        }
+
+        // Atualiza a barra de progresso
+        function updateProgress() {
+            let percent = (sessionStats.answered / sessionStats.total) * 100;
+            if (sessionStats.total === 0) percent = 0;
+            
+            progressFill.style.width = `${percent}%`;
+            progressText.textContent = `${sessionStats.answered} / ${sessionStats.total}`;
+        }
+
+        // Fim da sessão
+        function finishSession() {
+            questionText.innerHTML = "🎉 <br><br> Sessão Concluída! <br><br><span style='font-size: 1rem; color: var(--text-muted); font-weight: normal;'>Você revisou todos os cartões planejados para hoje. Excelente trabalho!</span>";
+            answerText.textContent = "Você pode reiniciar ou aguardar a próxima sessão.";
+            cardSubject.textContent = "Fim";
+            progressFill.style.width = "100%";
+            progressText.textContent = "Concluído!";
+        }
+
+        // Função para apagar o progresso e reiniciar
+        function resetProgress() {
+            if(confirm("Tem certeza que deseja apagar seu histórico de aprendizagem? Isso não pode ser desfeito.")) {
+                localStorage.removeItem('enem_review_history');
+                history = {};
+                buildQueue();
+            }
+        }
+
+        // ================= 3. INICIALIZAÇÃO =================
+        buildQueue();
+
+    </script>
 </body>
 </html>
