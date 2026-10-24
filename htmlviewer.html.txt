@@ -1,0 +1,425 @@
+from pathlib import Path import re path = Path("/mnt/data/base_autores_enem.html") html = path.read_text(encoding="utf-8") # Replace the existing CSS with a more polished dark-blue / light-blue interface. start = html.index(" <style>
+          ")
+end=html.index("
+</style>", start) + len("undefined</style>") new_css = """undefined<style>
+          :root {
+                    --navy: #071a35;
+                    --navy2: #0b2850;
+                    --blue: #123d70;
+                    --light-blue: #dcecff;
+                    --light-blue-2: #edf5ff;
+                    --ink: #102744;
+                    --muted: #526985;
+                    --line: #c5d9f1;
+                    --white: #fff;
+                    --green: #16834a;
+                    --green-bg: #d9fbe7;
+                    --yellow: #a56a00;
+                    --yellow-bg: #fff0b8;
+                    --red: #b42332;
+                    --red-bg: #ffe0e3;
+          }
+
+          * {
+                    box-sizing: border-box
+          }
+
+          html {
+                    scroll-behavior: smooth
+          }
+
+          body {
+                    margin: 0;
+                    background: linear-gradient(180deg, var(--navy) 0 290px, #eef5ff 290px 100%);
+                    color: var(--ink);
+                    font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif
+          }
+
+          header {
+                    color: white;
+                    padding: 42px 20px 48px;
+                    background: linear-gradient(130deg, #06152d, #0d3567 65%, #14518b);
+                    border-bottom: 4px solid #73b8ff
+          }
+
+          header .wrap,
+          main {
+                    max-width: 1120px;
+                    margin: auto
+          }
+
+          header .wrap {
+                    padding: 0 4px
+          }
+
+          h1 {
+                    font-size: clamp(2rem, 5vw, 3.2rem);
+                    letter-spacing: -.035em;
+                    line-height: 1.08;
+                    margin: 0 0 14px
+          }
+
+          header p {
+                    max-width: 800px;
+                    margin: 0;
+                    color: #dcecff;
+                    font-size: 1.05rem
+          }
+
+          main {
+                    padding: 24px 18px 56px
+          }
+
+          .notice {
+                    background: #fff4ce;
+                    color: #644700;
+                    border: 1px solid #f0d889;
+                    padding: 15px 17px;
+                    border-radius: 16px;
+                    margin-bottom: 20px;
+                    box-shadow: 0 8px 24px #04152b12
+          }
+
+          .stats {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                    gap: 13px;
+                    margin: 20px 0 24px
+          }
+
+          .stat {
+                    background: linear-gradient(145deg, #dcecff, #c9e2ff);
+                    border: 1px solid #a9cefa;
+                    border-radius: 18px;
+                    padding: 17px 18px;
+                    box-shadow: 0 8px 20px #06234b12
+          }
+
+          .stat b {
+                    display: block;
+                    font-size: 1.8rem;
+                    line-height: 1.2;
+                    color: #0b376a;
+                    margin-bottom: 6px
+          }
+
+          .stat span {
+                    color: #294d75
+          }
+
+          .controls {
+                    display: flex;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                    margin: 18px 0
+          }
+
+          .controls input,
+          .controls select {
+                    font: inherit;
+                    padding: 12px 14px;
+                    border: 1px solid #b8d0ec;
+                    border-radius: 12px;
+                    background: #fff;
+                    color: var(--ink);
+                    flex: 1;
+                    min-width: 190px;
+                    box-shadow: 0 3px 10px #06234b08
+          }
+
+          .controls input:focus,
+          .controls select:focus {
+                    outline: 3px solid #83bdff;
+                    outline-offset: 1px
+          }
+
+          .cards {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr));
+                    gap: 17px
+          }
+
+          .card {
+                    background: linear-gradient(155deg, #e7f2ff, #d4e8ff);
+                    border: 1px solid #a8cbf4;
+                    border-radius: 20px;
+                    padding: 21px;
+                    box-shadow: 0 10px 25px #0b2a5015;
+                    transition: transform .18s ease, box-shadow .18s ease
+          }
+
+          .card:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 15px 32px #0b2a5020
+          }
+
+          .card h2 {
+                    font-size: 1.3rem;
+                    letter-spacing: -.02em;
+                    margin: 0 0 4px;
+                    color: #0b315e
+          }
+
+          .meta {
+                    font-size: .85rem;
+                    color: #526d8c;
+                    margin-bottom: 12px
+          }
+
+          .tag {
+                    display: inline-block;
+                    font-size: .76rem;
+                    font-weight: 650;
+                    background: #fff;
+                    color: #164a82;
+                    border: 1px solid #bdd9f8;
+                    border-radius: 999px;
+                    padding: 4px 10px;
+                    margin: 0 4px 7px 0
+          }
+
+          .card h3 {
+                    font-size: .92rem;
+                    letter-spacing: .015em;
+                    color: #174b80;
+                    margin: 15px 0 4px
+          }
+
+          .card p {
+                    margin: 4px 0
+          }
+
+          .card ul {
+                    margin: 5px 0;
+                    padding-left: 20px
+          }
+
+          .caution {
+                    font-size: .9rem;
+                    background: #fff;
+                    border-left: 4px solid #5a8dc9;
+                    border-radius: 0 10px 10px 0;
+                    padding: 11px 13px;
+                    margin-top: 13px
+          }
+
+          section {
+                    margin-top: 34px
+          }
+
+          section>h2 {
+                    font-size: clamp(1.4rem, 3vw, 1.8rem);
+                    letter-spacing: -.025em;
+                    color: #0a2a50;
+                    margin-bottom: 8px
+          }
+
+          .table-wrap {
+                    overflow-x: auto;
+                    background: white;
+                    border: 1px solid #c7d9ee;
+                    border-radius: 16px;
+                    box-shadow: 0 8px 22px #0b2a500c
+          }
+
+          table {
+                    border-collapse: collapse;
+                    width: 100%;
+                    min-width: 650px
+          }
+
+          th,
+          td {
+                    text-align: left;
+                    padding: 13px 14px;
+                    border-bottom: 1px solid #dbe7f5;
+                    vertical-align: top
+          }
+
+          th {
+                    background: #dcecff;
+                    color: #153d68
+          }
+
+          tbody tr:nth-child(even) {
+                    background: #f6faff
+          }
+
+          button {
+                    cursor: pointer;
+                    border: 0;
+                    border-radius: 12px;
+                    padding: 11px 16px;
+                    background: #124b87;
+                    color: white;
+                    font: inherit;
+                    font-weight: 700;
+                    box-shadow: 0 4px 10px #08294b20;
+                    transition: transform .15s, filter .15s
+          }
+
+          button:hover {
+                    filter: brightness(1.07);
+                    transform: translateY(-1px)
+          }
+
+          button:focus-visible {
+                    outline: 3px solid #73b8ff;
+                    outline-offset: 3px
+          }
+
+          .secondary {
+                    background: #e5eef9;
+                    color: #173b62;
+                    border: 1px solid #bfd4ed;
+                    box-shadow: none
+          }
+
+          .flash {
+                    background: linear-gradient(145deg, #d8eaff, #bcdcff);
+                    border: 1px solid #8dbdf1;
+                    border-radius: 24px;
+                    padding: clamp(18px, 4vw, 30px);
+                    max-width: 760px;
+                    box-shadow: 0 16px 36px #08294b1c
+          }
+
+          .flash .question {
+                    font-weight: 750;
+                    font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+                    line-height: 1.45;
+                    margin: 8px 0 18px;
+                    color: #0a2c55
+          }
+
+          #flashCount {
+                    display: inline-block;
+                    background: #fff;
+                    border: 1px solid #a9cdf3;
+                    color: #1b4c7e;
+                    padding: 5px 11px;
+                    border-radius: 999px;
+                    font-weight: 700
+          }
+
+          .answer {
+                    display: none;
+                    background: #f7fbff;
+                    border: 1px solid #a7c9ee;
+                    border-left: 5px solid #1b65a5;
+                    border-radius: 14px;
+                    padding: 16px 17px;
+                    margin: 14px 0 18px;
+                    color: #183c62
+          }
+
+          #ratingArea {
+                    display: none;
+                    margin-top: 22px;
+                    padding-top: 18px;
+                    border-top: 1px solid #a5c9ef
+          }
+
+          .rating-buttons {
+                    display: grid;
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                    gap: 10px;
+                    margin-top: 10px
+          }
+
+          #rateEasy {
+                    background: var(--green-bg);
+                    color: #126b3b;
+                    border: 1px solid #80d9a3
+          }
+
+          #rateMedium {
+                    background: var(--yellow-bg);
+                    color: #805200;
+                    border: 1px solid #e8c65c
+          }
+
+          #rateHard {
+                    background: var(--red-bg);
+                    color: #a21f2d;
+                    border: 1px solid #f0a2a9
+          }
+
+          #rateEasy:hover {
+                    background: #bdf4d0
+          }
+
+          #rateMedium:hover {
+                    background: #ffe58a
+          }
+
+          #rateHard:hover {
+                    background: #ffc4ca
+          }
+
+          .small {
+                    font-size: .9rem;
+                    color: var(--muted)
+          }
+
+          footer {
+                    color: #516985;
+                    font-size: .88rem;
+                    margin-top: 32px;
+                    padding: 18px 4px;
+                    border-top: 1px solid #c8d9ed
+          }
+
+          @media(max-width:560px) {
+                    body {
+                              background: linear-gradient(180deg, var(--navy) 0 330px, #eef5ff 330px 100%)
+                    }
+
+                    header {
+                              padding: 30px 17px 35px
+                    }
+
+                    main {
+                              padding: 18px 12px 40px
+                    }
+
+                    .controls {
+                              display: block
+                    }
+
+                    .controls>* {
+                              width: 100%;
+                              margin-bottom: 9px
+                    }
+
+                    .card {
+                              padding: 17px
+                    }
+
+                    .rating-buttons {
+                              grid-template-columns: 1fr
+                    }
+
+                    .flash {
+                              border-radius: 19px
+                    }
+          }
+</style>""" html = html[:start] + new_css + html[end:] # Update the flashcard section so ratings appear only after the answer is revealed. html = html.replace( '''undefined<div style="margin-top:16px">
+          <strong>Como foi lembrar?</strong>
+          <p class="small">Sua avaliação fica salva neste navegador. Cartões difíceis voltam antes; fáceis aparecem menos.</p>
+          <div class="controls" style="margin:8px 0 0">
+                    <button id="rateEasy" class="secondary">Fácil</button>
+                    <button id="rateMedium" class="secondary">Médio</button>
+                    <button id="rateHard" class="secondary">Difícil</button>
+          </div>
+          <p id="ratingStatus" class="small" aria-live="polite"></p>undefined
+</div>''', '''undefined<div id="ratingArea">
+          <strong>Como foi lembrar?</strong>
+          <p class="small">Escolha uma opção para ajustar as próximas revisões. Difíceis voltam antes; fáceis aparecem menos.</p>
+          <div class="rating-buttons">
+                    <button id="rateEasy">Fácil</button>
+                    <button id="rateMedium">Intermediário</button>
+                    <button id="rateHard">Difícil</button>
+          </div>
+          <p id="ratingStatus" class="small" aria-live="polite"></p>undefined
+</div>''' ) # Make rating state wait until reveal; show the three colored choices after flipping. html = html.replace( '''const ratingStatus=document.getElementById('ratingStatus'); const STORAGE_KEY=''', '''const ratingStatus=document.getElementById('ratingStatus'); const ratingArea=document.getElementById('ratingArea'); const STORAGE_KEY=''' ) html = html.replace( '''function showQ(){ fq.textContent=quiz[qi].q;fa.textContent=quiz[qi].a;fa.style.display='none'; rev.textContent='Revelar resposta';fc.textContent=`Cartão ${qi+1} de ${quiz.length}`; const old=reviewData[quiz[qi].q]; ratingStatus.textContent=old?`Última avaliação: ${old.lastRating==='easy'?'fácil':old.lastRating==='medium'?'médio':'difícil'} · ${old.attempts} avaliação(ões).`:'Ainda não avaliado.'; }''', '''function showQ(){ fq.textContent=quiz[qi].q;fa.textContent=quiz[qi].a;fa.style.display='none'; rev.textContent='Virar cartão e revelar resposta'; ratingArea.style.display='none'; fc.textContent=`Cartão ${qi+1} de ${quiz.length}`; const old=reviewData[quiz[qi].q]; ratingStatus.textContent=old?`Última avaliação: ${old.lastRating==='easy'?'fácil':old.lastRating==='medium'?'intermediário':'difícil'} · ${old.attempts} avaliação(ões).`:''; }''' ) html = html.replace( '''rev.onclick=()=>{const open=fa.style.display==='block';fa.style.display=open?'none':'block';rev.textContent=open?'Revelar resposta':'Ocultar resposta'};''', '''rev.onclick=()=>{ const open=fa.style.display==='block'; fa.style.display=open?'none':'block'; rev.textContent=open?'Virar cartão e revelar resposta':'Ocultar resposta'; ratingArea.style.display=open?'none':'block'; if(!open) ratingArea.scrollIntoView({behavior:'smooth',block:'nearest'}); };''' ) path.write_text(html, encoding="utf-8") print(f"Interface atualizada: {path} ({path.stat().st_size:,} bytes)")
